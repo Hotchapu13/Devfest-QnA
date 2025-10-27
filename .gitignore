@@ -1,0 +1,74 @@
+Backend.md
+Build.md
+.venv/
+
+# 🐍 Python general
+devfest_qna/__pycache__/
+qna_app/__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.egg
+*.log
+
+# 📦 Virtual environments
+env/
+venv/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+
+# 🧰 IDE / Editor files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# 📁 Django / App specific
+db.sqlite3
+/media/
+staticfiles/
+static/
+*.mo
+*.pot
+
+# 🔑 Secrets / Credentials
+.env
+*.env
+.env.*
+
+# 🧪 Test / Coverage
+.coverage
+htmlcov/
+.tox/
+pytest_cache/
+nosetests.xml
+coverage.xml
+
+# 🧱 Migrations (optional, see note below)
+# Comment these out if you want to track migrations
+# **/migrations/
+# !**/migrations/__init__.py
+
+# 🚀 Deployment / Build
+build/
+dist/
+*.spec
+
+# 🗃️ System files
+.DS_Store
+Thumbs.db
+
+# 🐳 Docker
+*.pid
+*.seed
+*.bak
+*.tar
+docker-compose.override.yml
+
+# 🧠 Cache
+.cache/
