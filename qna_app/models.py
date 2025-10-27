@@ -6,7 +6,7 @@ from django.conf import settings
 class User(AbstractUser):
     # Inherits: id (PK), username, password, email, is_staff, is_active, etc.
     is_speaker = models.BooleanField(default=False)
-    display_nickname = models.CharField(max_length=150, blank=True, null=True)
+    display_name = models.CharField(max_length=150, blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True)
     
     # --- FIX for the SystemCheckError ---
