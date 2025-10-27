@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Speaker login endpoint
     path('api/auth/login', obtain_auth_token, name='api_login'),
-    path('api/', include('qna_app/urls')),
+    path('api/', include('qna_app.urls')),
 ]
