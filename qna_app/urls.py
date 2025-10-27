@@ -7,7 +7,7 @@ router = DefaultRouter()
 
 urlpatterns = [
     # custom audience registration view
-    path('auth/register-audience', views.AudienceRegistrationView.as_view(), name='register-audience'),
+    path('auth/register-audience/', views.AudienceRegistrationView.as_view(), name='register-audience'),
 
     # Logout endpoint
     path('auth/logout/', views.LogoutView.as_view(), name='api_logout'),
