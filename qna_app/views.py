@@ -1,3 +1,4 @@
+# from sqlite3 import IntegrityError
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -6,6 +7,7 @@ from rest_framework.authtoken.models import Token
 from .models import User
 from .serializers import AudienceRegistrationSerializer
 from rest_framework.permissions import IsAuthenticated
+from django.db import transaction, IntegrityError
 
 class AudienceRegistrationView(APIView):
     """
@@ -15,25 +17,35 @@ class AudienceRegistrationView(APIView):
 
     # Anyone can access this view
     permission_classes = []
-
+    
     def post(self, request):
         serializer = AudienceRegistrationSerializer(data=request.data)
 
         if serializer.is_valid():
-            nickname = serializer.validated_data['nickname']
+            nickname = serializer.validated_data['nickname'] # type: ignore
 
+            try:
+                with transaction.atomic():
             # create passwordless user using the nickname as username
-            user = User.objects.create(
-                username=nickname,
-                display_name=nickname,
-                is_speaker=False
-            )
+                    new_member = User.objects.create(
+                        username=nickname,
+                        display_name=nickname,
+                        is_speaker=False
+                    )
 
-            token, created = Token.objects.get_or_create(user=user)
+                    print(f"DEBUG: Type of 'user' variable is: {type(new_member)}")
+
+                    token, created = Token.objects.get_or_create(user_id=new_member.id)
+                    # token, created = Token.objects.get_or_create(user=new_member)
+            
+            except IntegrityError:
+                 # Handle cases like a race condition if two people try the same name simultaneously
+                 # You typically won't hit this with your current serializer validation, but it's safe practice.
+                 return Response({"error": "Database error during registration."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             return Response({
                 'token': token.key,
-                'nickname': user.display_name
+                'nickname': new_member.display_name
             }, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
